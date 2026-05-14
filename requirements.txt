@@ -1,0 +1,9 @@
+fastapi[all]
+uvicorn
+sqlalchemy
+python-jose[cryptography]
+passlib[bcrypt]
+google-genai
+python-multipart
+pdfplumber
+Pillow
