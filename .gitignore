@@ -1,0 +1,28 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+*.db
+student_assistant.db
+
+# Storage & Uploads
+backend/uploads/
+uploads/
+
+# Environment variables
+.env
+.env.local
+
+# Node & Frontend build output
+node_modules/
+dist/
+build/
+.vite/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
