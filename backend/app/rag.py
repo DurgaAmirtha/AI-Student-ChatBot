@@ -73,18 +73,26 @@ def get_embedding_vectors_batch(texts: List[str]) -> List[List[float]]:
             for i in range(0, len(texts), batch_size):
                 batch_texts = texts[i:i + batch_size]
                 try:
-                    response = client.models.embed_content(
-                        model="text-embedding-004",
-                        contents=batch_texts,
-                    )
-                    if hasattr(response, "embeddings") and response.embeddings:
+                    response = None
+                    for model_name in ["text-embedding-004", "embedding-001"]:
+                        try:
+                            response = client.models.embed_content(
+                                model=model_name,
+                                contents=batch_texts,
+                            )
+                            if response:
+                                break
+                        except Exception:
+                            continue
+
+                    if response and hasattr(response, "embeddings") and response.embeddings:
                         for idx, emb in enumerate(response.embeddings):
                             if i + idx < len(texts):
                                 results[i + idx] = emb.values
-                    elif hasattr(response, "embedding") and response.embedding:
+                    elif response and hasattr(response, "embedding") and response.embedding:
                         results[i] = response.embedding.values
                 except Exception as b_err:
-                    print(f"[RAG] Batch embedding sub-error: {b_err}")
+                    print(f"[RAG] Batch embedding fallback: {b_err}")
         except Exception as e:
             print(f"[RAG] Gemini embedding client error: {e}. Using fallback vectorizer.")
 
